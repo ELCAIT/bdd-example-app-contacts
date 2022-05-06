@@ -1,4 +1,4 @@
-package ch.elca.bdd.example.contacts;
+package ch.elca.bdd.example.contacts.contact.contact;
 
 import lombok.Builder;
 import lombok.Getter;

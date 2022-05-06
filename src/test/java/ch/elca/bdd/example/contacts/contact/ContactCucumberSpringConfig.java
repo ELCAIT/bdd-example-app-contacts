@@ -1,4 +1,4 @@
-package ch.elca.bdd.example.contacts;
+package ch.elca.bdd.example.contacts.contact;
 
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;

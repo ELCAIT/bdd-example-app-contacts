@@ -1,7 +1,7 @@
-package ch.elca.bdd.example.contacts;
+package ch.elca.bdd.example.contacts.contact.contact;
 
-import ch.elca.bdd.example.contacts.dto.ContactResponseDTO;
-import ch.elca.bdd.example.contacts.dto.CreateContactRequestDTO;
+import ch.elca.bdd.example.contacts.contact.contact.dto.ContactResponseDTO;
+import ch.elca.bdd.example.contacts.contact.contact.dto.CreateContactRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

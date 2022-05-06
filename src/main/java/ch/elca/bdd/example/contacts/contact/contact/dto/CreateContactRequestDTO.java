@@ -1,4 +1,4 @@
-package ch.elca.bdd.example.contacts.dto;
+package ch.elca.bdd.example.contacts.contact.contact.dto;
 
 import lombok.Getter;
 import lombok.Setter;

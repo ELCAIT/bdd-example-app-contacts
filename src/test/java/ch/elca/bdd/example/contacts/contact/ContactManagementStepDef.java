@@ -1,7 +1,10 @@
-package ch.elca.bdd.example.contacts;
+package ch.elca.bdd.example.contacts.contact;
 
-import ch.elca.bdd.example.contacts.dto.ContactResponseDTO;
-import ch.elca.bdd.example.contacts.dto.CreateContactRequestDTO;
+import ch.elca.bdd.example.contacts.contact.contact.ContactController;
+import ch.elca.bdd.example.contacts.contact.contact.ContactService;
+import ch.elca.bdd.example.contacts.contact.contact.CreateContactAction;
+import ch.elca.bdd.example.contacts.contact.contact.dto.ContactResponseDTO;
+import ch.elca.bdd.example.contacts.contact.contact.dto.CreateContactRequestDTO;
 import io.cucumber.java8.En;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
- * This implements the Gherkin Steps defined in the feature file (resources/ch/elca/bdd/examle/contacts/contact_management.feature)
+ * This implements the Gherkin Steps defined in the feature file (resources/ch/elca/bdd/example/contacts/contact/contact_management.feature)
  */
 public class ContactManagementStepDef implements En {
 

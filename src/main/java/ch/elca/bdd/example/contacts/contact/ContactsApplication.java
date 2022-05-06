@@ -1,4 +1,4 @@
-package ch.elca.bdd.example.contacts;
+package ch.elca.bdd.example.contacts.contact;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
