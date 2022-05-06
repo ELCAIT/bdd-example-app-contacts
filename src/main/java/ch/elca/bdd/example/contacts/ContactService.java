@@ -1,4 +1,4 @@
-package ch.elca.bdd.example.contacts.contact;
+package ch.elca.bdd.example.contacts;
 
 import lombok.Getter;
 import org.springframework.stereotype.Service;

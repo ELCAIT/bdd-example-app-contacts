@@ -1,7 +1,7 @@
-package ch.elca.bdd.example.contacts.contact;
+package ch.elca.bdd.example.contacts;
 
-import ch.elca.bdd.example.contacts.contact.dto.CreateContactRequestDTO;
-import ch.elca.bdd.example.contacts.contact.dto.ContactResponseDTO;
+import ch.elca.bdd.example.contacts.dto.ContactResponseDTO;
+import ch.elca.bdd.example.contacts.dto.CreateContactRequestDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
