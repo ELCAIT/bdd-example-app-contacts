@@ -11,7 +11,7 @@ repositories {
 
 ext {
     mapstructVersion = "1.4.2.Final"
-    lombokVersion = "1.18.20"
+    lombokVersion = "1.18.22"
     lombokMapstructBindingVersion = "0.2.0"
     springbootVersion = "2.6.6"
     junitVersion = "5.8.2"
