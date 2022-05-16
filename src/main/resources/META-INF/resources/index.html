@@ -19,8 +19,29 @@
     />
     <!-- MDB -->
     <link rel="stylesheet" href="css/mdb.min.css"/>
+    <script>
+        function fetchContacts() {
+            fetch('http://localhost:8080/contacts')
+                .then(response => response.json())
+                .then(jsonResult =>
+                    showContacts(jsonResult)
+                )
+
+            showContacts = contacts => {
+                console.debug("fetched contacts: " + JSON.stringify(contacts));
+                const contactsTableBody = document.querySelector('#contacts-table');
+                contacts.forEach(contact => {
+                    const tableRow = document.createElement('tr');
+                    const tableDataCell = document.createElement('td');
+                    tableDataCell.innerText = contact.name;
+                    tableRow.appendChild(tableDataCell);
+                    contactsTableBody.appendChild(tableRow);
+                });
+            }
+        }
+    </script>
 </head>
-<body>
+<body onload="fetchContacts()">
 <!-- Start your project here-->
 <div class="container">
     <div class="d-flex justify-content-center align-items-center" style="height: 100vh">
@@ -39,16 +60,7 @@
                                 <th scope="col">Contact Name</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>Mark</td>
-                            </tr>
-                            <tr>
-                                <td>Josh</td>
-                            </tr>
-                            <tr>
-                                <td>Jefferson</td>
-                            </tr>
+                            <tbody id="contacts-table">
                             </tbody>
                         </table>
                     </div>
