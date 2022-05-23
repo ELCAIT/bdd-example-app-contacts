@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -7,29 +7,21 @@
     <title>Contact Management - BDD Testing Example App</title>
     <!-- MDB icon -->
     <link rel="icon" href="img/mdb-favicon.ico" type="image/x-icon"/>
-    <!-- Font Awesome -->
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <!-- Google Fonts Roboto -->
-    <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
-    />
     <!-- MDB -->
     <link rel="stylesheet" href="css/mdb.min.css"/>
     <script>
+        const CONTACTS_URL = 'http://localhost:8080/contacts';
+
         function fetchContacts() {
-            fetch('http://localhost:8080/contacts')
+            fetch(CONTACTS_URL)
                 .then(response => response.json())
                 .then(jsonResult =>
                     showContacts(jsonResult)
                 )
 
-            showContacts = contacts => {
-                console.debug("fetched contacts: " + JSON.stringify(contacts));
+            const showContacts = contacts => {
                 const contactsTableBody = document.querySelector('#contacts-table');
+                contactsTableBody.innerHTML = '';
                 contacts.forEach(contact => {
                     const tableRow = document.createElement('tr');
                     const tableDataCell = document.createElement('td');
@@ -38,6 +30,28 @@
                     contactsTableBody.appendChild(tableRow);
                 });
             }
+        }
+
+        function submitContact() {
+            const createContactName = document.querySelector('#createContactName');
+            const requestData = {name: createContactName.value};
+            fetch(CONTACTS_URL,
+                {
+                    method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(requestData)
+                }
+            ).then(response => {
+                    if (response.ok) {
+                        console.log("successfully created contact, status: " + response.status);
+                        createContactName.value='';
+                        fetchContacts();
+                    } else {
+                        alert("Creation of contact failed.");
+                    }
+                }
+            );
+
         }
     </script>
 </head>
@@ -71,8 +85,11 @@
                 <div class="card bg-super-light">
                     <h5 class="card-header">Create a new Contact</h5>
                     <div class="card-body">
-                        <p>...</p>
-                        <a href="#" class="btn btn-primary">Save</a>
+                        <div class="form-outline mb-4">
+                            <input type="text" id="createContactName" class="form-control"/>
+                            <label class="form-label" for="createContactName">Contact name</label>
+                        </div>
+                        <a onclick="submitContact()" class="btn btn-primary">Save</a>
                     </div>
                 </div>
             </div>
