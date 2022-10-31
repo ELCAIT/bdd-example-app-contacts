@@ -1,0 +1,27 @@
+plugins {
+    id "com.github.node-gradle.node" version "3.3.0"
+}
+
+
+task startApplication() {
+    doLast{
+        println("starting test app!")
+
+    }
+}
+
+task stopApplication() {
+    doLast{
+        println("stopping test app!")
+    }
+}
+
+task cypressRun(type: NpmTask) {
+    args = ['run', 'cypress:run']
+}
+
+task runUiIntegrationTests() {
+    dependsOn cypressRun
+    cypressRun.dependsOn(startApplication)
+    cypressRun.finalizedBy(stopApplication)
+}

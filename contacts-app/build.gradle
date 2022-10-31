@@ -1,9 +1,15 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '2.7.0'
 }
 
 group 'ch.elca.example.bdd.contacts'
 version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
 
 repositories {
     mavenCentral()
@@ -41,4 +47,48 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+task startServer(dependsOn: 'assemble') {
+    def command = "java -jar contacts-app-${version}.jar"
+    def directory = "${projectDir}/build/libs/"
+    def ready = 'Started ContactsApplication'
+
+    ProcessBuilder builder = new ProcessBuilder(command.split(' '))
+    builder.redirectErrorStream(true)
+    builder.directory(new File(directory))
+    Process process = builder.start()
+    def pid = process.pid()
+
+    InputStream stdout = process.getInputStream()
+    BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))
+
+    def line
+    while ((line = reader.readLine()) != null) {
+        println line
+        if (line.contains(ready)) {
+            println "$command is ready"
+            break
+        }
+    }
+    doLast {
+        startServer.ext.pid = pid;
+    }
+}
+
+task startAndStopServer() {
+    dependsOn startServer
+    doLast() {
+        stopServer(startServer.pid)
+    }
+}
+
+def stopServer(serverPid) {
+    print("killing server process (${serverPid})")
+    def killCommand = "kill -9 ${serverPid}"
+
+    if (OperatingSystem.current().isWindows()) {
+        killCommand = "taskkill /F /PID ${serverPid}"
+    }
+    killCommand.execute().waitFor()
 }
