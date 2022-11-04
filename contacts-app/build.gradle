@@ -24,6 +24,7 @@ ext {
     junitPlatformSuiteVersion = "1.8.2"
     cucumberVersion = "7.2.3"
     apacheCommonsLangVersion = "3.12.0"
+    pidFileName = "contactsapp.pid"
 }
 
 dependencies {
@@ -49,7 +50,8 @@ test {
     useJUnitPlatform()
 }
 
-task startServer(dependsOn: 'assemble') {
+task startContactsApp(dependsOn: 'assemble') {
+    outputs.upToDateWhen { false }
     def command = "java -jar contacts-app-${version}.jar"
     def directory = "${projectDir}/build/libs/"
     def ready = 'Started ContactsApplication'
@@ -72,23 +74,26 @@ task startServer(dependsOn: 'assemble') {
         }
     }
     doLast {
-        startServer.ext.pid = pid;
+        new File(rootProject.projectDir, "${pidFileName}").text = pid
     }
 }
 
-task startAndStopServer() {
-    dependsOn startServer
-    doLast() {
-        stopServer(startServer.pid)
-    }
-}
+task stopContactsApp() {
+    outputs.upToDateWhen { false }
+    doLast(){
+        def pidFile = rootProject.file("${pidFileName}")
+        if(!pidFile.exists()){
+            print("skip stopping of app - no pid file")
+            return
+        }
+        def serverPid = pidFile.text.trim()
+        print("killing server process (${serverPid})")
+        def killCommand = "kill -9 ${serverPid}"
 
-def stopServer(serverPid) {
-    print("killing server process (${serverPid})")
-    def killCommand = "kill -9 ${serverPid}"
-
-    if (OperatingSystem.current().isWindows()) {
-        killCommand = "taskkill /F /PID ${serverPid}"
+        if (OperatingSystem.current().isWindows()) {
+            killCommand = "taskkill /F /PID ${serverPid}"
+        }
+        killCommand.execute().waitFor()
+        pidFile.delete()
     }
-    killCommand.execute().waitFor()
 }

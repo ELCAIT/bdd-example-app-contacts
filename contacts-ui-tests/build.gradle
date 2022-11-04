@@ -3,25 +3,12 @@ plugins {
 }
 
 
-task startApplication() {
-    doLast{
-        println("starting test app!")
-
-    }
-}
-
-task stopApplication() {
-    doLast{
-        println("stopping test app!")
-    }
-}
-
 task cypressRun(type: NpmTask) {
     args = ['run', 'cypress:run']
 }
 
 task runUiIntegrationTests() {
     dependsOn cypressRun
-    cypressRun.dependsOn(startApplication)
-    cypressRun.finalizedBy(stopApplication)
+    cypressRun.dependsOn(':contacts-app:startContactsApp')
+    cypressRun.finalizedBy(':contacts-app:stopContactsApp')
 }
