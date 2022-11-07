@@ -1,5 +1,5 @@
-Cypress.Commands.add('createContacts', (body) => {
-    cy.fixture('contacts.json').then((contacts) => {
+Cypress.Commands.add('createContacts', (fixtureFilename) => {
+    cy.fixture(fixtureFilename).then((contacts) => {
         contacts.forEach((contact) => {
             cy.request({
                 method: 'POST',
@@ -10,11 +10,22 @@ Cypress.Commands.add('createContacts', (body) => {
                 failOnStatusCode: false,
                 body: {
                     name: contact.name,
-                    ...body
                 }
             }).then((response) => {
                 expect(response.status).to.equal(201);
             });
         });
+    });
+});
+Cypress.Commands.add('deleteAllExistingContacts', () => {
+    cy.request({
+        method: 'DELETE',
+        url: '/contacts',
+        headers: {
+            'content-type': 'application/json',
+        },
+        failOnStatusCode: false,
+    }).then((response) => {
+        expect(response.status).to.equal(200);
     });
 });

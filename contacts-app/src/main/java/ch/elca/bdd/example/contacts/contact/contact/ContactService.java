@@ -1,6 +1,7 @@
 package ch.elca.bdd.example.contacts.contact.contact;
 
 import lombok.Getter;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,4 +20,8 @@ public class ContactService {
         return newContact;
     }
 
+    public ResponseEntity<Void> deleteAllContacts() {
+        contacts.clear();
+        return ResponseEntity.ok().build();
+    }
 }

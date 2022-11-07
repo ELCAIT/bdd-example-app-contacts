@@ -6,7 +6,8 @@ const contactsPage = new ContactsPage();
 
 
 Given('a user has 2 registered contacts so far', () => {
-    cy.createContacts();
+    cy.deleteAllExistingContacts();
+    cy.createContacts('contacts.json');
     contactsPage.visitContactsPage();
 })
 
