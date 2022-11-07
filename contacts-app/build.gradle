@@ -50,39 +50,38 @@ test {
     useJUnitPlatform()
 }
 
-task startContactsApp(dependsOn: 'assemble') {
-    outputs.upToDateWhen { false }
-    def command = "java -jar contacts-app-${version}.jar"
-    def directory = "${projectDir}/build/libs/"
-    def ready = 'Started ContactsApplication'
-
-    ProcessBuilder builder = new ProcessBuilder(command.split(' '))
-    builder.redirectErrorStream(true)
-    builder.directory(new File(directory))
-    Process process = builder.start()
-    def pid = process.pid()
-
-    InputStream stdout = process.getInputStream()
-    BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))
-
-    def line
-    while ((line = reader.readLine()) != null) {
-        println line
-        if (line.contains(ready)) {
-            println "$command is ready"
-            break
-        }
-    }
+task startContactsApp() {
+    dependsOn(assemble)
     doLast {
+        def command = "java -jar contacts-app-${version}.jar"
+        def directory = "${projectDir}/build/libs/"
+        def ready = 'Started ContactsApplication'
+
+        ProcessBuilder builder = new ProcessBuilder(command.split(' '))
+        builder.redirectErrorStream(true)
+        builder.directory(new File(directory))
+        Process process = builder.start()
+        def pid = process.pid()
+
+        InputStream stdout = process.getInputStream()
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))
+
+        def line
+        while ((line = reader.readLine()) != null) {
+            println line
+            if (line.contains(ready)) {
+                println "$command is ready"
+                break
+            }
+        }
         new File(rootProject.projectDir, "${pidFileName}").text = pid
     }
 }
 
 task stopContactsApp() {
-    outputs.upToDateWhen { false }
-    doLast(){
+    doLast {
         def pidFile = rootProject.file("${pidFileName}")
-        if(!pidFile.exists()){
+        if (!pidFile.exists()) {
             print("skip stopping of app - no pid file")
             return
         }
@@ -90,7 +89,7 @@ task stopContactsApp() {
         print("killing server process (${serverPid})")
         def killCommand = "kill -9 ${serverPid}"
 
-        if (OperatingSystem.current().isWindows()) {
+        if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
             killCommand = "taskkill /F /PID ${serverPid}"
         }
         killCommand.execute().waitFor()

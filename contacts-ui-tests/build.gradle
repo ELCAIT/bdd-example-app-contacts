@@ -3,12 +3,13 @@ plugins {
 }
 
 
-task cypressRun(type: NpmTask) {
+task runCypressUITests(type: NpmTask) {
+    dependsOn(':contacts-app:startContactsApp')
+    finalizedBy(':contacts-app:stopContactsApp')
     args = ['run', 'cypress:run']
 }
 
-task runUiIntegrationTests() {
-    dependsOn cypressRun
-    cypressRun.dependsOn(':contacts-app:startContactsApp')
-    cypressRun.finalizedBy(':contacts-app:stopContactsApp')
+task check(group: 'verification'){
+    dependsOn(':contacts-ui-tests:runCypressUITests')
+
 }
