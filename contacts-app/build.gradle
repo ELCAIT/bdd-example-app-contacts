@@ -52,6 +52,7 @@ test {
 
 task startContactsApp() {
     dependsOn(assemble)
+    dependsOn(':contacts-app:stopContactsApp')
     doLast {
         def command = "java -jar contacts-app-${version}.jar"
         def directory = "${projectDir}/build/libs/"
