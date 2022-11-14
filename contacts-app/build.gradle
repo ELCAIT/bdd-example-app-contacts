@@ -89,7 +89,7 @@ task stopContactsApp() {
         print("killing server process (${serverPid})")
         def killCommand = "kill -9 ${serverPid}"
 
-        if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        if (OperatingSystem.current().isWindows()) {
             killCommand = "taskkill /F /PID ${serverPid}"
         }
         killCommand.execute().waitFor()
