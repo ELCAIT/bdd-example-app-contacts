@@ -52,7 +52,6 @@ test {
 
 task startContactsApp() {
     dependsOn(assemble)
-    dependsOn(':contacts-app:stopContactsApp')
     doLast {
         def command = "java -jar contacts-app-${version}.jar"
         def directory = "${projectDir}/build/libs/"
@@ -68,14 +67,19 @@ task startContactsApp() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))
 
         def line
+        def success
         while ((line = reader.readLine()) != null) {
             println line
             if (line.contains(ready)) {
                 println "$command is ready"
+                success = true
                 break
             }
         }
-        new File(rootProject.projectDir, "${pidFileName}").text = pid
+
+        if (success){
+            new File(rootProject.projectDir, "${pidFileName}").text = pid
+        }
     }
 }
 
