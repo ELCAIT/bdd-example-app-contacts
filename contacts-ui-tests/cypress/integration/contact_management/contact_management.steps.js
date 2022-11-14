@@ -15,10 +15,10 @@ When('the user adds a new contact named {string}', (contactName) => {
     contactsPage.getCreateContactNameField().type(contactName);
     contactsPage.getCreateContactSaveButton().click();
 })
-Then('contact list contains a contact named {string}', (contactName) => {
+Then('the contact list contains a contact named {string}', (contactName) => {
     contactsPage.getContactsTable().should("contain.text", contactName);
 })
 
-Then('contact list contains {int} entries', (expectedContactsCount) => {
+Then('the contact list contains {int} entries', (expectedContactsCount) => {
     contactsPage.getContactsTableRows().should("have.length", expectedContactsCount);
 })

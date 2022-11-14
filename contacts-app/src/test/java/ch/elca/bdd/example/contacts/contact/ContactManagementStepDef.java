@@ -51,13 +51,13 @@ public class ContactManagementStepDef implements En {
                     request,
                     ContactResponseDTO.class);
         });
-        Then("contact list contains a contact named {string}", (String contactName) -> {
+        Then("the contact list contains a contact named {string}", (String contactName) -> {
             //check contacts list through REST interface
             ContactResponseDTO[] response = restTemplate.getForEntity(getLocalTestURL(), ContactResponseDTO[].class).getBody();
             assertNotNull(response);
             assertTrue(Arrays.stream(response).map(ContactResponseDTO::getName).anyMatch(name -> StringUtils.equals(name, contactName)));
         });
-        And("contact list contains {int} entries", (Integer expectedNumberOfEntries) -> {
+        And("the contact list contains {int} entries", (Integer expectedNumberOfEntries) -> {
             //check number of contacts in list through REST interface
             ContactResponseDTO[] response = restTemplate.getForEntity(getLocalTestURL(), ContactResponseDTO[].class).getBody();
             assertNotNull(response);
