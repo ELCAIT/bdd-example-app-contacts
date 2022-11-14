@@ -1,0 +1,98 @@
+import org.gradle.internal.os.OperatingSystem
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.0'
+}
+
+group 'ch.elca.example.bdd.contacts'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    mapstructVersion = "1.4.2.Final"
+    lombokVersion = "1.18.22"
+    lombokMapstructBindingVersion = "0.2.0"
+    springbootVersion = "2.6.6"
+    junitVersion = "5.8.2"
+    junitPlatformSuiteVersion = "1.8.2"
+    cucumberVersion = "7.2.3"
+    apacheCommonsLangVersion = "3.12.0"
+    pidFileName = "contactsapp.pid"
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-parent:${springbootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springbootVersion}"
+    implementation "org.apache.commons:commons-lang3:${apacheCommonsLangVersion}"
+
+
+    testImplementation("org.junit.platform:junit-platform-suite:${junitPlatformSuiteVersion}")
+    testImplementation("io.cucumber:cucumber-java8:${cucumberVersion}")
+    testImplementation("io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}")
+    testImplementation "io.cucumber:cucumber-spring:${cucumberVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springbootVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task startContactsApp() {
+    dependsOn(assemble)
+    doLast {
+        def command = "java -jar contacts-app-${version}.jar"
+        def directory = "${projectDir}/build/libs/"
+        def ready = 'Started ContactsApplication'
+
+        ProcessBuilder builder = new ProcessBuilder(command.split(' '))
+        builder.redirectErrorStream(true)
+        builder.directory(new File(directory))
+        Process process = builder.start()
+        def pid = process.pid()
+
+        InputStream stdout = process.getInputStream()
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))
+
+        def line
+        while ((line = reader.readLine()) != null) {
+            println line
+            if (line.contains(ready)) {
+                println "$command is ready"
+                break
+            }
+        }
+        new File(rootProject.projectDir, "${pidFileName}").text = pid
+    }
+}
+
+task stopContactsApp() {
+    doLast {
+        def pidFile = rootProject.file("${pidFileName}")
+        if (!pidFile.exists()) {
+            print("skip stopping of app - no pid file")
+            return
+        }
+        def serverPid = pidFile.text.trim()
+        print("killing server process (${serverPid})")
+        def killCommand = "kill -9 ${serverPid}"
+
+        if (OperatingSystem.current().isWindows()) {
+            killCommand = "taskkill /F /PID ${serverPid}"
+        }
+        killCommand.execute().waitFor()
+        pidFile.delete()
+    }
+}

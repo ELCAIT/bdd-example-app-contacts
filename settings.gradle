@@ -1,0 +1,3 @@
+rootProject.name = 'bdd-example-contacts'
+include 'contacts-app'
+include 'contacts-ui-tests'

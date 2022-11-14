@@ -1,0 +1,9 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "testFiles": "**/*.feature",
+  "viewportWidth": 800,
+  "viewportHeight": 800,
+  "chromeWebSecurity": false,
+  "video": false,
+  "screenshotOnRunFailure": true
+}
