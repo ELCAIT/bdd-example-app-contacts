@@ -67,7 +67,7 @@ task startContactsApp() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stdout))
 
         def line
-        def success
+        def success = false
         while ((line = reader.readLine()) != null) {
             println line
             if (line.contains(ready)) {
