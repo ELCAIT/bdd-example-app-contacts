@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+/**
+ * @author Mark Spoerndli
+ */
 @Getter
 @Setter
 public class ContactResponseDTO {

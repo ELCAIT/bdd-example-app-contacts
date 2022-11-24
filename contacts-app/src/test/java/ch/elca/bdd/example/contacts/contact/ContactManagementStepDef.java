@@ -19,9 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 /**
  * This implements the Gherkin Steps defined in the feature file (resources/ch/elca/bdd/example/contacts/contact/contact_management.feature)
+ *
+ * @author Mark Spoerndli
  */
 public class ContactManagementStepDef implements En {
 

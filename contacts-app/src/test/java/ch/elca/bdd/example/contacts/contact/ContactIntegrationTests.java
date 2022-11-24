@@ -10,6 +10,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static io.cucumber.core.options.Constants.GLUE_PROPERTY_NAME;
 
+/**
+ * @author Mark Spoerndli
+ */
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("ch/elca/bdd/example/contacts/contact")

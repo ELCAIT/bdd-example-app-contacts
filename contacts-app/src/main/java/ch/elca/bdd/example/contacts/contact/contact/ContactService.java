@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+/**
+ * @author Mark Spoerndli
+ */
 @Service
 public class ContactService {
 

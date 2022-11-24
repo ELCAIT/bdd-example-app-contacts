@@ -4,6 +4,9 @@ import ch.elca.bdd.example.contacts.contact.contact.dto.ContactResponseDTO;
 import ch.elca.bdd.example.contacts.contact.contact.dto.CreateContactRequestDTO;
 import org.mapstruct.Mapper;
 
+/**
+ * @author Mark Spoerndli
+ */
 @Mapper(componentModel = "spring")
 public interface ContactMapper {
     CreateContactAction createContactRequestDTOToCreateContactAction(CreateContactRequestDTO createContactRequestDTO);

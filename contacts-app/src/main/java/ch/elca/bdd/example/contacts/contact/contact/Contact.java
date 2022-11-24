@@ -9,6 +9,9 @@ import lombok.ToString;
 
 import java.util.UUID;
 
+/**
+ * @author Mark Spoerndli
+ */
 @Getter
 @Setter
 @ToString
