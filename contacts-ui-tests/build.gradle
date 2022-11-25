@@ -5,11 +5,11 @@ plugins {
 
 task runCypressUITests(type: NpmTask) {
     dependsOn(':contacts-app:startContactsApp')
+    dependsOn('npmInstall')
     finalizedBy(':contacts-app:stopContactsApp')
     args = ['run', 'cypress:run']
 }
 
 task check(group: 'verification'){
     dependsOn(':contacts-ui-tests:runCypressUITests')
-
 }
